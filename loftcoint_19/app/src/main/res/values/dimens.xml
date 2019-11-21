@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="small_margin">8dp</dimen>
+    <dimen name="medium_font">16sp</dimen>
+    <dimen name="lage_font">32dp</dimen>
+
+    <dimen name="item_wallet_width">240dp</dimen>
+    <dimen name="item_wallet_margin">20dp</dimen>
+</resources>
