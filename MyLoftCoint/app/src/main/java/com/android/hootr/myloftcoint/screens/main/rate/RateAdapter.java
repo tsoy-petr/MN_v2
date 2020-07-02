@@ -12,11 +12,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.hootr.myloftcoint.App;
 import com.android.hootr.myloftcoint.R;
-import com.android.hootr.myloftcoint.data.api.model.Coin;
-import com.android.hootr.myloftcoint.data.api.model.Quote;
+import com.android.hootr.myloftcoint.data.db.model.CoinEntity;
+import com.android.hootr.myloftcoint.data.db.model.QuoteEntity;
 import com.android.hootr.myloftcoint.data.model.Currency;
 import com.android.hootr.myloftcoint.data.model.Fiat;
 import com.android.hootr.myloftcoint.data.prefs.Prefs;
@@ -26,23 +28,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RateAdapter
         extends RecyclerView.Adapter<RateAdapter.RateViewHolder> {
 
-    private List<Coin> coins = new ArrayList<>();
+    private List<CoinEntity> coins = new ArrayList<>();
 
-    private Prefs prefs;
+    @Inject
+    public Prefs prefs;
 
-    RateAdapter(Prefs prefs) {
-        this.prefs = prefs;
+    public RateAdapter() {
+
+        App.getComponent().injectRateAdapter(this);
+
     }
 
-    public void setCoins(List<Coin> coins) {
-        this.coins = coins;
-        notifyDataSetChanged();
+    public void setCoins(List<CoinEntity> newCoins) {
+
+
+        CoinDiffCallback diffCallback = new CoinDiffCallback(this.coins, newCoins);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.coins.clear();
+        this.coins.addAll(newCoins);
+        diffResult.dispatchUpdatesTo(this);
+        //notifyDataSetChanged();
     }
 
 
@@ -103,8 +117,8 @@ public class RateAdapter
         RateViewHolder(View itemView, Prefs prefs) {
             super(itemView);
 
-            symbolText =  itemView.findViewById(R.id.symbol_text);
-            symbolIcon =  itemView.findViewById(R.id.symbol_icon);
+            symbolText = itemView.findViewById(R.id.symbol_text);
+            symbolIcon = itemView.findViewById(R.id.symbol_icon);
             name = itemView.findViewById(R.id.currency_name);
             price = itemView.findViewById(R.id.price);
             percentChange = itemView.findViewById(R.id.percent_change);
@@ -116,7 +130,7 @@ public class RateAdapter
         }
 
 
-        void bind(Coin coin, int position) {
+        void bind(CoinEntity coin, int position) {
             bindIcon(coin);
             bindSymbol(coin);
             bindPrice(coin);
@@ -132,11 +146,11 @@ public class RateAdapter
             }
         }
 
-        private void bindPercentage(Coin coin) {
+        private void bindPercentage(CoinEntity coin) {
 
-            Quote quote = coin.quotes.get(prefs.getFiatCurrency().name());
+            QuoteEntity quote = coin.getQuote(prefs.getFiatCurrency());
 
-            float percentChangeValue =  quote.percentChange24h;
+            float percentChangeValue = quote.percentChange24h;
 
 
             percentChange.setText(context.getString(R.string.rate_item_percent_change, percentChangeValue));
@@ -151,23 +165,21 @@ public class RateAdapter
             }
         }
 
-        private void bindPrice(Coin coin) {
+        private void bindPrice(CoinEntity coin) {
             Fiat fiat = prefs.getFiatCurrency();
-            Quote quote = coin.quotes.get(fiat.name());
+            QuoteEntity quote = coin.getQuote(fiat);
             String value = null;
             if (quote != null) {
                 value = currencyFormatter.format(quote.price, false);
             }
-
             price.setText(context.getString(R.string.currency_amount, value, fiat.symbol));
         }
 
-
-        private void bindSymbol(Coin coin) {
+        private void bindSymbol(CoinEntity coin) {
             name.setText(coin.symbol);
         }
 
-        private void bindIcon(Coin coin) {
+        private void bindIcon(CoinEntity coin) {
             Currency currency = Currency.getCurrency(coin.symbol);
 
             if (currency != null) {

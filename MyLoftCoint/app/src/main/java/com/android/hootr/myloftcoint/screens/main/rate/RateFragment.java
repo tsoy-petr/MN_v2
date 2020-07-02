@@ -19,18 +19,19 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.hootr.myloftcoint.App;
 import com.android.hootr.myloftcoint.R;
-import com.android.hootr.myloftcoint.data.api.Api;
-import com.android.hootr.myloftcoint.data.api.model.Coin;
+import com.android.hootr.myloftcoint.data.db.model.CoinEntity;
 import com.android.hootr.myloftcoint.data.model.Fiat;
 import com.android.hootr.myloftcoint.data.prefs.Prefs;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class RateFragment extends Fragment implements RateView, Toolbar.OnMenuItemClickListener, CurrencyDialog.CurrencyDialogListener{
+public class RateFragment extends Fragment implements RateView, Toolbar.OnMenuItemClickListener, CurrencyDialog.CurrencyDialogListener {
 
     private static final String LAYOUT_MANAGER_STATE = "layout_manager_state";
 
@@ -49,12 +50,15 @@ public class RateFragment extends Fragment implements RateView, Toolbar.OnMenuIt
     @BindView(R.id.progress)
     ViewGroup progress;
 
+    @Inject
+    public RatePresenter presenter;
 
-    private RatePresenter presenter;
-    private RateAdapter adapter;
+    public RateAdapter adapter;
     private Unbinder unbinder;
 
     private Parcelable layoutMangerState;
+
+    private long currentPostion = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,19 +70,20 @@ public class RateFragment extends Fragment implements RateView, Toolbar.OnMenuIt
             return;
         }
 
-        Api api = ((App) getActivity().getApplication()).getApi();
+//        Api api = ((App) getActivity().getApplication()).getApi();
         Prefs prefs = ((App) getActivity().getApplication()).getPrefs();
-
-//        Database mainDatabase = ((App) getActivity().getApplication()).getDatabase();
-//        Database workerDatabase = ((App) getActivity().getApplication()).getDatabase();
-//
+//        Database dataBase = ((App) getActivity().getApplication()).getDatabase();
 //        CoinEntityMapper mapper = new CoinEntityMapper();
 //
-        presenter = new RatePresenterImpl(api, prefs);
+//        presenter = new RatePresenterImpl(api, prefs, dataBase, mapper);
 
-        adapter = new RateAdapter(prefs);
 
-        adapter.setHasStableIds(true);
+        App.getComponent().injectRateFragment(this);
+
+        adapter = new RateAdapter();
+
+        adapter.setHasStableIds(true); // в случае когда id в БД с автогенерацией
+
     }
 
     @Override
@@ -108,19 +113,20 @@ public class RateFragment extends Fragment implements RateView, Toolbar.OnMenuIt
             }
         });
 
-        if (savedInstanceState != null) {
-            layoutMangerState = savedInstanceState.getParcelable(LAYOUT_MANAGER_STATE);
-        }
-
         Fragment fragment = getFragmentManager().findFragmentByTag(CurrencyDialog.TAG);
 
         if (fragment != null) {
             ((CurrencyDialog) fragment).setListener(this);
         }
 
+        if (savedInstanceState != null) {
+            layoutMangerState = savedInstanceState.getParcelable(LAYOUT_MANAGER_STATE);
+        }
 
         presenter.attachView(this);
         presenter.getRate();
+
+        recycler.getLayoutManager().onRestoreInstanceState(layoutMangerState);
 
     }
 
@@ -132,7 +138,19 @@ public class RateFragment extends Fragment implements RateView, Toolbar.OnMenuIt
     }
 
     @Override
+    public void onStop() {
+        presenter.onStopView();
+        super.onStop();
+    }
+
+    @Override
     public boolean onMenuItemClick(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.menu_item_currency:
+                presenter.onMenuItemCurrencyClick();
+                return true;
+        }
         return false;
     }
 
@@ -143,7 +161,9 @@ public class RateFragment extends Fragment implements RateView, Toolbar.OnMenuIt
 
     @Override
     public void showCurrencyDialog() {
-
+        CurrencyDialog dialog = new CurrencyDialog();
+        dialog.setListener(this);
+        dialog.show(getFragmentManager(), CurrencyDialog.TAG);
     }
 
     @Override
@@ -157,17 +177,33 @@ public class RateFragment extends Fragment implements RateView, Toolbar.OnMenuIt
     }
 
     @Override
-    public void setCurrencyImage(Fiat currency) {
+    public void setCurrencyImage(int resours) {
+
+        MenuItem menuItem = toolbar.getMenu().findItem(R.id.menu_item_currency);
+        menuItem.setIcon(resours);
 
     }
 
     @Override
-    public void setCoins(List<Coin> coins) {
+    public void setCoins(List<CoinEntity> coins) {
         adapter.setCoins(coins);
+
+        if (layoutMangerState != null) {
+            recycler.getLayoutManager().onRestoreInstanceState(layoutMangerState);
+            layoutMangerState = null;
+        }
     }
 
     @Override
     public void onCurrencySelected(Fiat currency) {
         presenter.onFiatCurrencySelected(currency);
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(LAYOUT_MANAGER_STATE, recycler.getLayoutManager().onSaveInstanceState());
+        super.onSaveInstanceState(outState);
+    }
+
+
 }

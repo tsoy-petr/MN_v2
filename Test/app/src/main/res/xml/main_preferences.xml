@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:defaultValue="http://localhost"
+        android:key="@string/KEY_ADRESS_1C_SERVER"
+        android:title="Адрес сервера 1С" />
+
+    <EditTextPreference
+        android:defaultValue="http://localhost"
+        android:key="@string/KEY_ADRESS_MONGO_SERVER"
+        android:title="Адрес сервера MongoDB" />
+
+    <CheckBoxPreference
+
+        android:defaultValue="false"
+        android:key="ScaningEnable"
+        android:summaryOff="Выключено"
+        android:summaryOn="Влючено"
+        android:title="Сканирование включено" />
+
+    <ListPreference
+        android:defaultValue="bip"
+        android:entries="@array/pref_warning_sound_labels"
+        android:entryValues="@array/pref_warning_sound_values"
+        android:key="warning_sound"
+        android:title="Warning sound" />
+
+</PreferenceScreen>

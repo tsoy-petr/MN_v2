@@ -8,6 +8,8 @@ public interface RatePresenter {
 
     void detachView();
 
+    void onStopView();
+
     void getRate();
 
     void onRefresh();

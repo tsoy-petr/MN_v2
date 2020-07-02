@@ -14,9 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.hootr.myloftcoint.App;
 import com.android.hootr.myloftcoint.R;
-import com.android.hootr.myloftcoint.data.api.Api;
-import com.android.hootr.myloftcoint.data.prefs.Prefs;
 import com.android.hootr.myloftcoint.screens.main.MainActivity;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,13 +35,15 @@ public class StartActivity extends AppCompatActivity implements StartView {
     @BindView(R.id.start_outer_circle)
     ImageView outerCircle;
 
+    private AnimatorSet set;
+
     public static void start(Context context) {
         Intent starter = new Intent(context, StartActivity.class);
         starter.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(starter);
     }
 
-
+    @Inject
     public StartPresenter presenter;
 
     @Override
@@ -51,12 +53,14 @@ public class StartActivity extends AppCompatActivity implements StartView {
         setContentView(R.layout.activity_start);
         unbinder = ButterKnife.bind(this);
 
-        Api api = ((App) getApplication()).getApi();
-        Prefs prefs = ((App) getApplication()).getPrefs();
+//        Api api = ((App) getApplication()).getApi();
+//        Prefs prefs = ((App) getApplication()).getPrefs();
+//        Database dataBase = ((App) getApplication()).getDatabase();
+//        CoinEntityMapper mapper = new CoinEntityMapper();
+//
+//        presenter = new StartPresenterImp(api, prefs, dataBase, mapper);
 
-        presenter = new StartPresenterImp(api, prefs);
-
-//        App.getComponent().injectStartActivity(this);
+        App.getComponent().injectStartActivity(this);
         presenter.attachView(this);
 
         presenter.loadRate();
@@ -99,9 +103,22 @@ public class StartActivity extends AppCompatActivity implements StartView {
         outerAnimator.setRepeatCount(ValueAnimator.INFINITE);
         outerAnimator.setInterpolator(new LinearInterpolator());
 
-        AnimatorSet set = new AnimatorSet();
+        set = new AnimatorSet();
         set.play(innerAnimator).with(outerAnimator);
         set.start();
+
+
+    }
+
+    @Override
+    protected void onPause() {
+
+
+        if (set != null && set.isRunning()) {
+            set.cancel();
+        }
+
+        super.onPause();
     }
 
     @Override
@@ -109,5 +126,11 @@ public class StartActivity extends AppCompatActivity implements StartView {
         super.onStart();
 
         startAnimations();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i("happy", "onStop: StartActivity");
+        super.onStop();
     }
 }

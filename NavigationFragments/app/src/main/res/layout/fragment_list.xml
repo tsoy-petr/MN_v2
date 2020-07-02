@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.ListFragment">
+
+    <Button
+        android:id="@+id/btnStartMenu"
+        android:text="Перейти к меню"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/buttonListFragmentBC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_generate_bc" />
+
+    <Button
+        android:id="@+id/btnOpenScaning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Открыть сканирование" />
+
+</LinearLayout>

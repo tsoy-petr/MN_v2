@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="pref_warning_sound_labels">
+        <item>Bip</item>
+        <item>Siren</item>
+    </array>
+
+    <array name="pref_warning_sound_values">
+        <item>bip</item>
+        <item>alarm_siren_sound</item>
+    </array>
+</resources>

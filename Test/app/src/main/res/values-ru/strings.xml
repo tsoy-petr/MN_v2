@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Test</string>
+    <string name="adress_mongo_db_server">Адрес Mongo DB сервера</string>
+    <string name="adress_server_1c">Адрес 1С сервера</string>
+    <string name="order_assembly">Сборка заказа</string>
+    <string name="title_about_menu">О приложении</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="title_activity_start">Начало</string>
+    <string name="title_login">Введите код пользователя</string>
+    <string name="title_settings_menu">Настройки</string>
+    <string name="txt_login">Вход</string>
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".fr_3.Fragment_3">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fragment 3" />
+
+    <Button
+        android:id="@+id/btnToSeconFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Вернуться на второй фрагмент" />
+
+    <Button
+        android:id="@+id/btnToSeconFirstFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Вернуться на первый фрагмент" />
+
+    <Button
+        android:id="@+id/btnCreateNewSeries"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Создать новую серию" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    <ProgressBar
+        android:id="@+id/pb"
+
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+</LinearLayout>

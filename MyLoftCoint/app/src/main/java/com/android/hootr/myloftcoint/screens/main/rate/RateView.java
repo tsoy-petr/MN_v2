@@ -1,13 +1,14 @@
 package com.android.hootr.myloftcoint.screens.main.rate;
 
-import com.android.hootr.myloftcoint.data.api.model.Coin;
-import com.android.hootr.myloftcoint.data.model.Fiat;
+import androidx.annotation.DrawableRes;
+
+import com.android.hootr.myloftcoint.data.db.model.CoinEntity;
 
 import java.util.List;
 
 public interface RateView {
 
-    void setCoins(List<Coin> coins);
+    void setCoins(List<CoinEntity> coins);
 
     void setRefreshing(Boolean refreshing);
 
@@ -17,7 +18,6 @@ public interface RateView {
 
     void hideProgress();
 
-    void setCurrencyImage(Fiat currency);
-
+    void setCurrencyImage(@DrawableRes int resours);
 
 }

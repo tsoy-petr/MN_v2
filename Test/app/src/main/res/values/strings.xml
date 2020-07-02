@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Test</string>
+    <string name="title_settings_menu">Settings</string>
+    <string name="title_about_menu">About</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_start">StartActivity</string>
+    <string name="title_login">Введите код пользователя</string>
+    <string name="txt_login">Login</string>
+
+
+    <!--  Key preferences  -->
+    <string name="KEY_ISLOGIN" translatable="false">isLogin</string>
+    <string name="KEY_ADRESS_1C_SERVER" translatable="false">Adress1CServer</string>
+    <string name="KEY_ADRESS_MONGO_SERVER" translatable="false">AdressMongoServer</string>
+    <string name="adress_server_1c">Adress server 1C</string>
+    <string name="adress_mongo_db_server">Adress Mongo DB server</string>
+    <string name="order_assembly">Order assembly</string>
+
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6AA22A</color>
+    <color name="colorPrimaryDark">#496F1F</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="main_head_color">#030303</color>
+    <color name="main_subhead_color">#B4020202</color>
+    <color name="main_button_color">#6AA22A</color>
+    <color name="secondary_text_color">#FFFFFF</color>
+    <color name="primary_text_color">#000000</color>
+</resources>

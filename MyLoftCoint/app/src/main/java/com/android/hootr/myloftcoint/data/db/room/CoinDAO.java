@@ -9,6 +9,8 @@ import com.android.hootr.myloftcoint.data.db.model.CoinEntity;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface CoinDAO {
 
@@ -16,5 +18,9 @@ public interface CoinDAO {
     void saveCoins(List<CoinEntity> coins);
 
     @Query("select * from coin")
-    List<CoinEntity> getCoins();
+    Flowable<List<CoinEntity>> getCoins();
+
+    @Query("SELECT * FROM Coin WHERE symbol = :symbol")
+    CoinEntity getCoin(String symbol);
+
 }

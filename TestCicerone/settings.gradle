@@ -1,0 +1,2 @@
+rootProject.name='TestCicerone'
+include ':app'

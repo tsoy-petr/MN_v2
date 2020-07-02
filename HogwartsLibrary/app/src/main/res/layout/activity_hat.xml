@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.scenes.hat.HatActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="@string/welcome_title"
+        android:textColor="@color/main_head_color"
+        android:textSize="@dimen/main_head_size" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:text="@string/welcome_subtitle"
+        android:textColor="@color/main_subhead_color"
+        android:textSize="@dimen/main_subhead_size" />
+
+    <ImageView
+        android:layout_width="196dp"
+        android:layout_height="196dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/img_hat" />
+
+    <EditText
+        android:id="@+id/textWelcomeUsername"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:hint="@string/welcome_name_hint" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnWelomeSelected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:height="56dp"
+        android:background="@drawable/main_button_background"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/welcom_select_faculty"
+        android:textAllCaps="false"
+        android:textColor="@color/secondary_text_color" />
+
+    <TextView
+        android:id="@+id/textWelcomeSelected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center_horizontal"
+        android:text="@string/welcome_selcted"
+        android:textColor="@color/primary_text_color"
+        android:textSize="@dimen/primary_text_size"
+        android:visibility="gone" />
+</LinearLayout>

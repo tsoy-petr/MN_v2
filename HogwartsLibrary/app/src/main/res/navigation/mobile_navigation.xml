@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.android.hootr.hogwartslibrary.ui.scenes.students.StudientsFragment"
+        android:label="@string/title_students"
+        tools:layout="@layout/fragment_studients" />
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.android.hootr.hogwartslibrary.ui.scenes.houses.HousesFragment"
+        android:label="@string/title_houses"
+        tools:layout="@layout/fragment_houses" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_houseDetailFragment"
+            app:destination="@id/houseDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.android.hootr.hogwartslibrary.ui.scenes.spells.SpellsFragment"
+        android:label="@string/title_spells"
+        tools:layout="@layout/fragment_spells" />
+    <fragment
+        android:id="@+id/houseDetailFragment"
+        android:name="com.android.hootr.hogwartslibrary.ui.scenes.house.HouseDetailFragment"
+        android:label="house_detail_fragment"
+        tools:layout="@layout/house_detail_fragment" >
+        <argument
+            android:name="House"
+            app:argType="com.android.hootr.hogwartslibrary.ui.scenes.house.Houses"
+            android:defaultValue="Gryffindor" />
+    </fragment>
+</navigation>

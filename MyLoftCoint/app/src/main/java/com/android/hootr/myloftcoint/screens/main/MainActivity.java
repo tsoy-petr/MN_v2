@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.android.hootr.myloftcoint.R;
 import com.android.hootr.myloftcoint.data.prefs.Prefs;
+import com.android.hootr.myloftcoint.screens.main.converter.ConverterFragment;
 import com.android.hootr.myloftcoint.screens.main.rate.RateFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -84,11 +85,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showConverterFragment() {
-//        ConverterFragment fragment = new ConverterFragment();
-//        FragmentManager fm = getSupportFragmentManager();
-//        FragmentTransaction transaction = fm.beginTransaction();
-//        transaction.replace(R.id.fragment_container, fragment);
-//        transaction.commit();
+        ConverterFragment fragment = new ConverterFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
     }
 
 

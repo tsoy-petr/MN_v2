@@ -1,0 +1,6 @@
+rootProject.name='TransportApp'
+include ':app'
+include ':data'
+include ':domen'
+include ':presentation'
+include ':utilities'

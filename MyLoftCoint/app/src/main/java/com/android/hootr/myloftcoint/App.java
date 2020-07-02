@@ -4,9 +4,12 @@ import android.app.Application;
 
 import com.android.hootr.myloftcoint.data.api.Api;
 import com.android.hootr.myloftcoint.data.api.ApiInitializer;
+import com.android.hootr.myloftcoint.data.db.Database;
+import com.android.hootr.myloftcoint.data.db.DatabaseInitialazer;
 import com.android.hootr.myloftcoint.data.prefs.Prefs;
 import com.android.hootr.myloftcoint.data.prefs.PrefsImpl;
 import com.android.hootr.myloftcoint.di.AppComponent;
+import com.android.hootr.myloftcoint.di.DaggerAppComponent;
 
 public class App extends Application {
 
@@ -14,6 +17,8 @@ public class App extends Application {
     private Prefs prefs;
 
     private static App instance;
+
+    private Database database;
 
     private static AppComponent component;
 
@@ -26,10 +31,9 @@ public class App extends Application {
 
         instance = this;
 
-//        component = DaggerAppComponent.builder()
-//                .contextModule(new ContextModule(this))
-//                .prefsModule(new PrefsModule()).
-//                        build();
+        database = new DatabaseInitialazer().init(this);
+
+        component = DaggerAppComponent.create();
 
 
     }
@@ -48,5 +52,9 @@ public class App extends Application {
 
     public static AppComponent getComponent() {
         return component;
+    }
+
+    public Database getDatabase() {
+        return database;
     }
 }
