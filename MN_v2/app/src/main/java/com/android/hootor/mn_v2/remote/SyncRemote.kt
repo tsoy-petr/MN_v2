@@ -9,6 +9,10 @@ interface SyncRemote {
     fun getArrayPackage(): Flowable<ArrayPackageItem>
 
     fun getPackage(uuidPackage: String): PackageItem
+
+    suspend fun getPacageArraySus(): ArrayPackageItem
+
+    fun getPackageSus(uuidPackage: String): PackageItem
 }
 
 class SyncRemoteImpl @Inject constructor() : SyncRemote {
@@ -91,27 +95,86 @@ class SyncRemoteImpl @Inject constructor() : SyncRemote {
             itemsPriceList = listOf(
                 //Мебель
                 ItemPriceListEntity(
-                    uuidPriceList = "2a1fda82-b6d4-11ea-b3de-0242ac130004",
-                    id = "16d45aa6-bab3-11ea-b3de-0242ac130004"
+                    uuidPriceList = "pl1",
+                    id = "c1"
                 ),
                 //Столы
                 ItemPriceListEntity(
-                    uuidPriceList = "2a1fda82-b6d4-11ea-b3de-0242ac130004",
-                    id = "16d45baa-bab3-11ea-b3de-0242ac130004",
-                    parent = "2a1fda82-b6d4-11ea-b3de-0242ac130004"
+                    uuidPriceList = "pl1",
+                    id = "c2",
+                    parent = "c1"
                 ),
                 //Стекляный стол
                 ItemPriceListEntity(
-                    uuidPriceList = "2a1fda82-b6d4-11ea-b3de-0242ac130004",
-                    id = "16d46136-bab3-11ea-b3de-0242ac130004",
-                    parent = "16d45baa-bab3-11ea-b3de-0242ac130004"
+                    uuidPriceList = "pl1",
+                    id = "g1",
+                    parent = "c2"
                 ),
+                //Деревянный стол
+                ItemPriceListEntity(
+                    uuidPriceList = "pl1",
+                    id = "g3",
+                    parent = "c2"
+                ),
+
 
                 //Стулья
                 ItemPriceListEntity(
-                    uuidPriceList = "2a1fda82-b6d4-11ea-b3de-0242ac130004",
-                    id = "16d45dd0-bab3-11ea-b3de-0242ac130004",
-                    parent = "2a1fda82-b6d4-11ea-b3de-0242ac130004"
+                    uuidPriceList = "pl1",
+                    id = "c3",
+                    parent = "c1"
+                ),
+                //Стекляный стул
+                ItemPriceListEntity(
+                    uuidPriceList = "pl1",
+                    id = "g3",
+                    parent = "c3"
+                ),
+                //Деревянный стул
+                ItemPriceListEntity(
+                    uuidPriceList = "pl1",
+                    id = "g4",
+                    parent = "c3"
+                ),
+
+
+                //Одежда
+                ItemPriceListEntity(
+                    uuidPriceList = "pl1",
+                    id = "c4"
+                ),
+
+                //Рубашки
+                ItemPriceListEntity(
+                    uuidPriceList = "pl1",
+                    id = "c5", parent = "c4"
+                ),
+                //Рубашка с коротким рукавом
+                ItemPriceListEntity(
+                    uuidPriceList = "pl1",
+                    id = "g5", parent = "c5"
+                ),
+                //Рубашка с длинным рукавом
+                ItemPriceListEntity(
+                    uuidPriceList = "pl1",
+                    id = "g6", parent = "c5"
+                ),
+
+
+                //Брюки
+                ItemPriceListEntity(
+                    uuidPriceList = "pl1",
+                    id = "c6", parent = "c4"
+                ),
+                //Брюки белые
+                ItemPriceListEntity(
+                    uuidPriceList = "pl1",
+                    id = "g7", parent = "c6"
+                ),
+                //Брюки черные
+                ItemPriceListEntity(
+                    uuidPriceList = "pl1",
+                    id = "g8", parent = "c6"
                 )
             )
         )
@@ -121,7 +184,7 @@ class SyncRemoteImpl @Inject constructor() : SyncRemote {
             uuid = uuid,
             priceLists = listOf(
                 PriceListEntity(
-                    uuid = "16d46df2-bab3-11ea-b3de-0242ac130004",
+                    uuid = "pl1",
                     title = "Основонй прайс-лист"
                 )
             )
@@ -132,7 +195,7 @@ class SyncRemoteImpl @Inject constructor() : SyncRemote {
             uuid = uuid,
             typesOfPrice = listOf(
                 TypeOfPriceEntity(
-                    uuid = "16d45862-bab3-11ea-b3de-0242ac130004",
+                    uuid = "tp1",
                     title = "Основной"
                 )
             )
@@ -143,27 +206,27 @@ class SyncRemoteImpl @Inject constructor() : SyncRemote {
             uuid = uuid,
             categories = listOf(
                 CategoryEntity(
-                    uuid = "16d45aa6-bab3-11ea-b3de-0242ac130004",
+                    uuid = "c1",
                     title = "Мебель"
                 ),
                 CategoryEntity(
-                    uuid = "16d45baa-bab3-11ea-b3de-0242ac130004",
+                    uuid = "c2",
                     title = "Столы"
                 ),
                 CategoryEntity(
-                    uuid = "16d45dd0-bab3-11ea-b3de-0242ac130004",
+                    uuid = "c3",
                     title = "Стулья"
                 ),
                 CategoryEntity(
-                    uuid = "16d45eb6-bab3-11ea-b3de-0242ac130004",
+                    uuid = "c4",
                     title = "Одежда"
                 ),
                 CategoryEntity(
-                    uuid = "16d45f88-bab3-11ea-b3de-0242ac130004",
+                    uuid = "c5",
                     title = "Рубашка"
                 ),
                 CategoryEntity(
-                    uuid = "16d4605a-bab3-11ea-b3de-0242ac130004",
+                    uuid = "c6",
                     title = "Брюки"
                 )
             )
@@ -174,35 +237,35 @@ class SyncRemoteImpl @Inject constructor() : SyncRemote {
             uuid = uuid,
             goods = listOf(
                 GoodsItemEntity(
-                    uuid = "16d46136-bab3-11ea-b3de-0242ac130004",
+                    uuid = "g1",
                     title = "Стекляный стол"
                 ),
                 GoodsItemEntity(
-                    uuid = "16d461fe-bab3-11ea-b3de-0242ac130004",
+                    uuid = "g2",
                     title = "Деревянный стол"
                 ),
                 GoodsItemEntity(
-                    uuid = "16d463b6-bab3-11ea-b3de-0242ac130004",
+                    uuid = "g3",
                     title = "Деревянный стул"
                 ),
                 GoodsItemEntity(
-                    uuid = "16d464a6-bab3-11ea-b3de-0242ac130004",
+                    uuid = "g4",
                     title = "Стекляный стул"
                 ),
                 GoodsItemEntity(
-                    uuid = "16d466cc-bab3-11ea-b3de-0242ac130004",
+                    uuid = "g5",
                     title = "Рубашка с коротким рукавом"
                 ),
                 GoodsItemEntity(
-                    uuid = "16d4679e-bab3-11ea-b3de-0242ac130004",
+                    uuid = "g6",
                     title = "Рубашка с длинным рукавом"
                 ),
                 GoodsItemEntity(
-                    uuid = "16d46866-bab3-11ea-b3de-0242ac130004",
+                    uuid = "g7",
                     title = "Брюки белые"
                 ),
                 GoodsItemEntity(
-                    uuid = "16d4692e-bab3-11ea-b3de-0242ac130004",
+                    uuid = "g8",
                     title = "Брюки черные"
                 )
             )
@@ -213,22 +276,85 @@ class SyncRemoteImpl @Inject constructor() : SyncRemote {
             uuid = uuid,
             goods = listOf(
                 GoodsItemEntity(
-                    uuid = "16d469ec-bab3-11ea-b3de-0242ac130004",
+                    uuid = "g9",
                     title = "Стол кухонный"
                 ),
                 GoodsItemEntity(
-                    uuid = "16d46ab4-bab3-11ea-b3de-0242ac130004",
+                    uuid = "g10",
                     title = "Кухонный стул"
                 ),
                 GoodsItemEntity(
-                    uuid = "16d46c62-bab3-11ea-b3de-0242ac130004",
+                    uuid = "g11",
                     title = "Рубашка стильная"
                 ),
                 GoodsItemEntity(
-                    uuid = "16d46d2a-bab3-11ea-b3de-0242ac130004",
+                    uuid = "g12",
                     title = "Брюки модные"
                 )
             )
         )
+
+    override suspend fun getPacageArraySus() = ArrayPackageItem(
+        listOf(
+            PackageItemInfo(
+                uuid = "2a1fd2d0-b6d4-11ea-b3de-0242ac130004",
+                type = TYPE_OF_PRICE,
+                order = 1
+            ),
+
+            PackageItemInfo(
+                uuid = "2a1fd9a6-b6d4-11ea-b3de-0242ac130004",
+                type = TYPE_CATEGORY,
+                order = 2
+            ),
+
+            PackageItemInfo(
+                uuid = "2a1fda82-b6d4-11ea-b3de-0242ac130004",
+                type = TYPE_PRICE_LIST,
+                order = 3
+            ),
+
+            PackageItemInfo(
+                uuid = "2a1fdb54-b6d4-11ea-b3de-0242ac130004",
+                type = TYPE_GOODS,
+                order = 4
+            ),
+            PackageItemInfo(
+                uuid = "2a1fdde8-b6d4-11ea-b3de-0242ac130004",
+                type = TYPE_GOODS,
+                order = 5
+            ),
+
+            PackageItemInfo(
+                uuid = "2a1fded8-b6d4-11ea-b3de-0242ac130004",
+                type = TYPE_ITEM_PRICE_LIST,
+                order = 6
+            )
+        )
+    )
+
+    override fun getPackageSus(uuidPackage: String) = when (uuidPackage) {
+        "2a1fd2d0-b6d4-11ea-b3de-0242ac130004" -> {
+            mocTypeOfPrice(uuidPackage)
+        }
+        "2a1fd9a6-b6d4-11ea-b3de-0242ac130004" -> {
+            mocCategory(uuidPackage)
+        }
+        "2a1fda82-b6d4-11ea-b3de-0242ac130004" -> {
+            mocPriceList(uuidPackage)
+        }
+        "2a1fdb54-b6d4-11ea-b3de-0242ac130004" -> {
+            mocGoods_1(uuidPackage)
+        }
+        "2a1fdde8-b6d4-11ea-b3de-0242ac130004" -> {
+            mocGoods_2(uuidPackage)
+        }
+        "2a1fded8-b6d4-11ea-b3de-0242ac130004" -> {
+            mocItemsPriceList(uuidPackage)
+        }
+        else -> {
+            PackageItem(uuid = uuidPackage)
+        }
+    }
 
 }

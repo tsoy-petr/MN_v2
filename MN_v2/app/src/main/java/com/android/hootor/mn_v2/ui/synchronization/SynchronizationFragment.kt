@@ -19,11 +19,11 @@ import javax.inject.Inject
 
 class SynchronizationFragment : Fragment(R.layout.fragment_synchronization) {
 
-    private val compositeDisposable = CompositeDisposable()
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: SyncViewPresenter
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +49,11 @@ class SynchronizationFragment : Fragment(R.layout.fragment_synchronization) {
             viewModel.selectAllGoods()
         }
 
+
     }
 
+
     override fun onDestroy() {
-        compositeDisposable.dispose()
         super.onDestroy()
     }
 

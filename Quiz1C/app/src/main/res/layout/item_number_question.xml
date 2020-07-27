@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/tools"
+    app:contentPadding="8dp"
+
+    app:cardBackgroundColor="@color/colorPrimary"
+
+
+    android:focusable="true"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+
+    android:layout_margin="8dp"
+    >
+
+    <TextView
+        android:id="@+id/tvTitleNumberQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="99eee9"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        />
+</androidx.cardview.widget.CardView>

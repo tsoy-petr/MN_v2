@@ -8,7 +8,11 @@ import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import javax.inject.Inject
+import kotlin.coroutines.suspendCoroutine
 
 class SyncRepository @Inject constructor(
     val syncRemote: SyncRemote,
@@ -54,13 +58,6 @@ class SyncRepository @Inject constructor(
                 Thread.sleep(1200)
                 when (it.first) {
                     TYPE_GOODS -> {
-//                        val allItemGoods = mutableListOf<GoodsItemEntity>()
-//                        for (i in 0 until it.second.size) {
-//                            val curr = syncRemote.getPackage(it.second[i].uuid)
-//                            allItemGoods += curr.goods
-//                        }
-//                        syncDatabase.syncDao.updateGoods(allItemGoods)
-
                         saveToDB(
                             it.second,
                             syncRemote::getPackage,
@@ -69,13 +66,6 @@ class SyncRepository @Inject constructor(
                         )
                     }
                     TYPE_CATEGORY -> {
-//                        val allCategory = mutableListOf<CategoryEntity>()
-//                        for (i in 0 until it.second.size) {
-//                            val curr = syncRemote.getPackage(it.second[i].uuid)
-//                            allCategory += curr.categories
-//                        }
-//                        syncDatabase.syncDao.updateCategory(allCategory)
-//
                         saveToDB(
                             it.second,
                             syncRemote::getPackage,
@@ -92,6 +82,22 @@ class SyncRepository @Inject constructor(
                             syncDatabase.syncDao::updateTypeOfPrices
                         )
 
+                    }
+                    TYPE_PRICE_LIST -> {
+                        saveToDB(
+                            it.second,
+                            syncRemote::getPackage,
+                            { it.priceLists },
+                            syncDatabase.syncDao::updatePricesList
+                        )
+                    }
+                    TYPE_ITEM_PRICE_LIST -> {
+                        saveToDB(
+                            it.second,
+                            syncRemote::getPackage,
+                            { it.itemsPriceList },
+                            syncDatabase.syncDao::updateItemsPriceList
+                        )
                     }
                 }
 
@@ -116,26 +122,40 @@ class SyncRepository @Inject constructor(
 
     }
 
-    private fun concatAllGoods(listPackage: List<PackageItem>): List<GoodsItemEntity> {
-        val buff = mutableListOf<GoodsItemEntity>()
-        listPackage.forEach {
-            buff += it.goods
-        }
-        return buff
-    }
-
     fun selectAllGoods() = syncDatabase.syncDao.getAllGoods()
 
     inline fun <T> saveToDB(
         packListItemsPackage: List<PackageItemInfo>,
-        ex: (String) -> PackageItem, fg: (PackageItem) -> List<T>, upDB: (List<T>) -> Unit
+        loading: (String) -> PackageItem, fg: (PackageItem) -> List<T>, upDB: (List<T>) -> Unit
     ) {
         val allItems = mutableListOf<T>()
         for (i in 0 until packListItemsPackage.size) {
-            val curr = ex(packListItemsPackage[i].uuid)
+            val curr = loading(packListItemsPackage[i].uuid)
             allItems += fg(curr)
         }
+        upDB(allItems)
     }
+
+    suspend fun executeSyncSus(): PublishSubject<MessageSync> {
+        startLoadAlternativ()
+        return publisher
+    }
+
+    suspend private fun startLoadAlternativ() {
+
+        delay(1000)
+        coroutineScope {
+            val arrayUuidPackages = async {
+                syncRemote.getPacageArraySus()
+            }.await()
+
+            publisher.onNext(MessageSync.Load("Получены заголовки пакетов"))
+
+        }
+
+
+    }
+
 }
 
 

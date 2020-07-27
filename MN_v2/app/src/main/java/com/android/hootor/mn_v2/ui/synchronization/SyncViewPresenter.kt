@@ -2,11 +2,14 @@ package com.android.hootor.mn_v2.ui.synchronization
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.android.hootor.mn_v2.ui.common.BaseViewModel
 import com.android.hootor.mn_v2.ui.synchronization.SyncFetchStatus.Loading
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SyncViewPresenter @Inject constructor(
@@ -32,11 +35,22 @@ class SyncViewPresenter @Inject constructor(
 
     @SuppressLint("CheckResult")
     private fun fetchData() {
-        compositeDisposable.add(syncRepository.executeSync().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                update(it)
-            })
+
+       viewModelScope.launch {
+
+           compositeDisposable.add(syncRepository.executeSyncSus().subscribeOn(Schedulers.io())
+               .observeOn(AndroidSchedulers.mainThread())
+               .subscribe {
+                   update(it)
+               })
+
+       }
+
+//        compositeDisposable.add(syncRepository.executeSync().subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe {
+//                update(it)
+//            })
     }
 
     private fun update(messageSync: MessageSync) {

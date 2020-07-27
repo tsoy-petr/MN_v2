@@ -13,3 +13,11 @@ inline fun <reified T : ViewModel> Fragment.injectViewModel(factory: ViewModelPr
     return ViewModelProvider(this, factory).get(T::class.java)
 }
 
+inline fun <reified T : ViewModel> Fragment.injectViewModelActivity(factory: ViewModelProvider.Factory): T {
+    return ViewModelProvider(requireActivity(), factory).get(T::class.java)
+}
+
+inline fun <reified T : ViewModel> Fragment.injectViewModelParentFragment(factory: ViewModelProvider.Factory): T {
+    return parentFragment?.let { ViewModelProvider(it, factory).get(T::class.java)  }
+    ?: throw IllegalStateException("Wrong parent fragment")
+}
